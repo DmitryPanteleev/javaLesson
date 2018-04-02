@@ -1,6 +1,6 @@
 public class UserBuilder {
 
-    protected User user;
+    protected User user = new User();
 
 
     public UserBuilder createNewUser() {
@@ -44,17 +44,17 @@ public class UserBuilder {
     }
 
     public UserBuilder buildStreet(String street) {
-        user.getAddress().setStreet(street);
+        user.setAddress(new Address()).setStreet(street);
         return this;
     }
 
     public UserBuilder buildZipcode(String zipcode) {
-        user.getAddress().setZipcode(zipcode);
+        user.setAddress(new Address()).setZipcode(zipcode);
         return this;
     }
 
     public UserBuilder buildCity(String city) {
-        user.getAddress().setCity(city);
+        user.setAddress(new Address()).setCity(city);
         return this;
     }
 

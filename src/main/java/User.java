@@ -2,12 +2,9 @@ public class User {
 
     private Address address;
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
+    public Address setAddress(Address address) {
         this.address = address;
+        return address;
     }
 
     private String firstName;
