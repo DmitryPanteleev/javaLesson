@@ -1,4 +1,17 @@
 public class User {
+    @Override
+    public String toString() {
+        return "User{" +
+                "address=" + address +'\n'+
+                ", firstName='" + firstName + '\n' +
+                ", lastName='" + lastName + '\n' +
+                ", userName='" + userName + '\n' +
+                ", password='" + password + '\n' +
+                ", email='" + email + '\n' +
+                ", ranking=" + ranking +'\n'+
+                ", admin=" + admin +
+                '}';
+    }
 
     private Address address;
 

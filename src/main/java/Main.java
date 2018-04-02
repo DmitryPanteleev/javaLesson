@@ -1,10 +1,11 @@
 public class Main {
+
     public static void main(String[] args) {
 
         UserBuilder user = new UserBuilder()
-                .buildFirstName("Dimon")
+                .buildFirstName("Dmitry")
                 .buildLastName("Panteleev")
-                .buildUserName("Dmitry")
+                .buildUserName("Dimon")
                 .buildPassword("1234")
                 .buildEmail("DPanteleev@croc.ru")
                 .buildRancing(10)
@@ -12,7 +13,6 @@ public class Main {
                 .buildStreet("Street")
                 .buildZipcode("500600")
                 .buildCity("Moscow");
-
-
+        System.out.println(user.user.toString());
     }
 }
