@@ -16,12 +16,12 @@ public class User {
     }
 
     private Address address;
-    private BillingDetails billingDetails;
-
-    public BillingDetails defaultBillingDetails(BillingDetails billingDetails) {
-        this.billingDetails = billingDetails;
-        return billingDetails;
-    }
+//    private BillingDetails billingDetails;
+//
+//    public BillingDetails defaultBillingDetails(BillingDetails billingDetails) {
+//        this.billingDetails = billingDetails;
+//        return billingDetails;
+//    }
 
     List<BillingDetails> billingDetails = new List<BillingDetails>() {
         public int size() {
