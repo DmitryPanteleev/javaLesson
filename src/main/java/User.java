@@ -3,8 +3,12 @@ import java.util.List;
 
 public class User {
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
-    private BillingDetails defaultBillingDetails;   //
-    private Address address;
+    private BillingDetails defaultBillingDetails;   // Указываем, что у юзера есть платёжные реквизиты по умолчанию
+    private List<Item> boughtItems = new ArrayList<>();
+    private List<Item> soldItems = new ArrayList<>();
+    private Address homeAddress;
+    private Address billingAddress;
+    private Address shippingAddress;
     private String firstName;
     private String lastName;
     private String userName;
@@ -13,13 +17,28 @@ public class User {
     private int ranking;
     private boolean admin;
 
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(Address address) {
+        this.shippingAddress = address;
+    }
+
+    public void addBoughtItem(Item item) {
+        boughtItems.add(item);
+    }
+
+    public void addSoldItem(Item item) {
+        soldItems.add(item);
+    }
+
     public void addBillingDetails(BillingDetails billingDetails) {
         billingDetailsList.add(billingDetails);
-        if (billingDetailsList.size() == 1){
+        if (billingDetailsList.size() == 1) {
             setDefaultBillingDetails(billingDetails);
         }
     }
-
 
     public BillingDetails getDefaultBillingDetails() {
         return defaultBillingDetails;
@@ -31,23 +50,28 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +'\n'+
-                "billingDetailsList=" + billingDetailsList +'\n' +
-                ", defaultBillingDetails=" + defaultBillingDetails +'\n' +
-                ", address=" + address +'\n' +
+        return "User{" + '\n' +
+                "billingDetailsList=" + billingDetailsList + '\n' +
+                ", defaultBillingDetails=" + defaultBillingDetails + '\n' +
+                ", address=" + homeAddress + '\n' +
+                ", address1=" + billingAddress + '\n' +
+                ", address2=" + shippingAddress + '\n' +
                 ", firstName='" + firstName + '\n' +
                 ", lastName='" + lastName + '\n' +
                 ", userName='" + userName + '\n' +
                 ", password='" + password + '\n' +
                 ", email='" + email + '\n' +
-                ", ranking=" + ranking +'\n'+
+                ", ranking=" + ranking + '\n' +
                 ", admin=" + admin +
                 '}';
     }
 
-    public Address setAddress(Address address) {
-        this.address = address;
-        return address;
+    public void setHomeAddress(Address address) {
+        this.homeAddress = address;
+    }
+
+    public void setBillingAddress(Address address) {
+        this.billingAddress = address;
     }
 
     public String getFirstName() {

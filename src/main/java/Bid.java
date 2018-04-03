@@ -2,20 +2,20 @@ import java.util.Date;
 
 public class Bid {
 
-    private long amount;
+    private Long amount;
     private Date created;
+    private User creator;
 
-    public long getAmount() {
-        return amount;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
-    public void setAmount(long amount) {
+
+
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 
-    public Date getCreated() {
-        return created;
-    }
 
     public void setCreated(Date created) {
         this.created = created;
