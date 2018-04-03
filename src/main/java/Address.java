@@ -14,7 +14,7 @@ public class Address {
                 "street='" + street + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", city='" + city + '\'' +
-                '}';
+                '}'+'\n';
     }
 
     public void setStreet(String street) {
