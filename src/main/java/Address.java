@@ -8,6 +8,15 @@ public class Address {
         return street;
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
+
     public void setStreet(String street) {
         this.street = street;
     }
