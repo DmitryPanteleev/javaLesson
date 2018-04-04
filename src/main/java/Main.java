@@ -67,7 +67,7 @@ public class Main {
                 CreditCardType.VISA));
         user.addBillingDetails(new BankAccount(user.getFirstName() + " " + user.getLastName(),
                 "4321",
-                "bankhui",
+                "bank",
                 "32498234638746"));
 
 
