@@ -10,17 +10,17 @@ public class Address {
         return street;
     }
 
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     @Override
     public String toString() {
         return "users.Address{" +
                 "street='" + street + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", city='" + city + '\'' +
-                '}'+'\n';
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
+                '}' + '\n';
     }
 
     public String getZipcode() {
@@ -28,7 +28,18 @@ public class Address {
     }
 
     public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+        try {
+            if (zipcode.length() == 6) {
+                Integer.parseInt(zipcode);
+                this.zipcode = zipcode;
+            } else {System.out.println("********************");
+            System.out.println("Некорректная длинна индекса " + zipcode + " " + zipcode.length() + " цифр вместо 6.");
+            System.out.println("********************");}
+        } catch (NumberFormatException e) {
+            System.out.println("********************");
+            System.out.println("Индекс состоит не только из цифр " + e);
+            System.out.println("********************");
+        }
     }
 
     public String getCity() {
