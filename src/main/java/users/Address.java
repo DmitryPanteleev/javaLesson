@@ -1,3 +1,5 @@
+package users;
+
 public class Address {
 
     private String street;
@@ -10,7 +12,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" +
+        return "users.Address{" +
                 "street='" + street + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", city='" + city + '\'' +

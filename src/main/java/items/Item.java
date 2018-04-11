@@ -1,3 +1,9 @@
+package items;
+
+import enums.ItemState;
+import shipment.Bid;
+import users.User;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

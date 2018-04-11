@@ -1,3 +1,7 @@
+package shipment;
+
+import users.User;
+
 import java.util.Date;
 
 public class Bid {

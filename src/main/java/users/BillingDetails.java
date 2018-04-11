@@ -1,3 +1,5 @@
+package users;
+
 abstract public class BillingDetails {
 
     protected String ownerName;

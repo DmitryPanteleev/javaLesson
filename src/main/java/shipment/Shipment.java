@@ -1,3 +1,10 @@
+package shipment;
+
+import enums.ShipmentState;
+import items.Item;
+import users.Address;
+import users.User;
+
 import java.util.Date;
 
 public class Shipment {

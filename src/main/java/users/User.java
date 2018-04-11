@@ -1,3 +1,7 @@
+package users;
+
+import items.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +54,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + '\n' +
+        return "users.User{" + '\n' +
                 "billingDetailsList=" + billingDetailsList + '\n' +
                 ", defaultBillingDetails=" + defaultBillingDetails + '\n' +
                 ", address=" + homeAddress + '\n' +

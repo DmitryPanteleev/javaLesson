@@ -1,3 +1,14 @@
+import items.Categoty;
+import enums.CreditCardType;
+import items.Comment;
+import items.Item;
+import shipment.Bid;
+import shipment.Shipment;
+import users.Address;
+import users.BankAccount;
+import users.CreditCard;
+import users.User;
+
 public class Main {
 
     public static void main(String[] args) {

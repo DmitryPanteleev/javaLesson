@@ -1,3 +1,8 @@
+package users;
+
+import enums.CreditCardType;
+import users.BillingDetails;
+
 public class CreditCard extends BillingDetails {
 
     String number;
@@ -6,7 +11,7 @@ public class CreditCard extends BillingDetails {
 
     @Override
     public String toString() {
-        return "CreditCard{" +
+        return "users.CreditCard{" +
                 "number='" + number + '\'' +
                 ", expMonth='" + expMonth + '\'' +
                 ", expYear='" + expYear + '\'' +

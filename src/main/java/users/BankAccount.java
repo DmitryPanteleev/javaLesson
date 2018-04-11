@@ -1,3 +1,7 @@
+package users;
+
+import users.BillingDetails;
+
 public class BankAccount extends BillingDetails {
     String number;
 
@@ -7,7 +11,7 @@ public class BankAccount extends BillingDetails {
 
     @Override
     public String toString() {
-        return "BankAccount{" +
+        return "users.BankAccount{" +
                 "number='" + number + '\'' +
                 ", bankName='" + bankName + '\'' +
                 ", swift='" + swift + '\'' +
