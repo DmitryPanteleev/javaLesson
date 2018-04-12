@@ -6,12 +6,12 @@ public class Address {
     private String zipcode;
     private String city;
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
+    public Address(String street, String zipcode, String city) throws Exception {
         this.street = street;
+        if ( zipcode.matches("^[0-9][0-9][0-9][0-9][0-9][0-9]$")) {
+            this.zipcode = zipcode;
+        }else throw (new IllegalArgumentException("Не правильный формат индекса"));
+        this.city = city;
     }
 
     @Override
@@ -23,6 +23,14 @@ public class Address {
                 '}' + '\n';
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public String getZipcode() {
         return zipcode;
     }
@@ -32,9 +40,11 @@ public class Address {
             if (zipcode.length() == 6) {
                 Integer.parseInt(zipcode);
                 this.zipcode = zipcode;
-            } else {System.out.println("********************");
-            System.out.println("Некорректная длинна индекса " + zipcode + " " + zipcode.length() + " цифр вместо 6.");
-            System.out.println("********************");}
+            } else {
+                System.out.println("********************");
+                System.out.println("Некорректная длинна индекса " + zipcode + " " + zipcode.length() + " цифр вместо 6.");
+                System.out.println("********************");
+            }
         } catch (NumberFormatException e) {
             System.out.println("********************");
             System.out.println("Индекс состоит не только из цифр " + e);
