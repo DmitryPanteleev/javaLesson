@@ -4,6 +4,9 @@ import enums.ItemState;
 import shipment.Bid;
 import users.User;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
 public class Item {
 
     private List<Bid> bidList = new ArrayList<>();
-    private Bid successfulBid;
+    //    private Bid successfulBid;
     private String name;
     private String description;
     private Long initialPrice;
@@ -19,17 +22,43 @@ public class Item {
     private Date startDate;
     private Date endDate;
     private Date approvalDatetime;
-    private User seller;
     private ItemState state;
     private List<Categoty> categotyList = new ArrayList<>();
 
-    public void addBid(Bid bid){
+
+    private User seller;
+
+    public Item(String name,
+                String description, Long initialPrice,
+                String startDate, String endDate, String approvalDatetime, User seller,
+                ItemState state) {
+        this.name = name;
+        this.description = description;
+        this.initialPrice = initialPrice;
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            this.startDate = format.parse(startDate);
+            this.endDate = format.parse(endDate);
+            this.approvalDatetime = format.parse(approvalDatetime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (seller.getDefaultBillingDetails() != null) {
+            this.seller = seller;
+        }
+
+        this.state = state;
+
+    }
+
+
+    public void addBid(Bid bid) {
         bidList.add(bid);
     }
 
-    public void setSuccessfulBid(Bid successfulBid) {
-        this.successfulBid = successfulBid;
-    }
+//    public void setSuccessfulBid(Bid successfulBid) {
+//        this.successfulBid = successfulBid;
+//    }
 
     public User getSeller() {
         return seller;

@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+    public User(String firstName, String lastName, String userName, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+    }
+
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
     private BillingDetails defaultBillingDetails;   // Указываем, что у юзера есть платёжные реквизиты по умолчанию
     private List<Item> boughtItems = new ArrayList<>();
@@ -18,8 +26,8 @@ public class User {
     private String userName;
     private String password;
     private String email;
-    private int ranking;
-    private boolean admin;
+    private int ranking = 0;
+    private boolean admin = false;
 
     public Address getShippingAddress() {
         return shippingAddress;

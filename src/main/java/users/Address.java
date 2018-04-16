@@ -8,10 +8,46 @@ public class Address {
 
     public Address(String street, String zipcode, String city) throws Exception {
         this.street = street;
-        if ( zipcode.matches("^[0-9][0-9][0-9][0-9][0-9][0-9]$")) {
+        if (zipcode.matches("^[0-9][0-9][0-9][0-9][0-9][0-9]$")) {
             this.zipcode = zipcode;
-        }else throw (new IllegalArgumentException("Не правильный формат индекса"));
+        } else throw (new IllegalArgumentException("Не правильный формат индекса"));
         this.city = city;
+    }
+
+    public static void createNewHomeAddress(User newUser, String street, String zipcode, String city) {
+        try {
+            Address homeAddress = new Address(street, zipcode, city);
+            newUser.setHomeAddress(homeAddress);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+    }
+
+    public static void createNewBillingAddress(User newUser, String street, String zipcode, String city) {
+        try {
+            Address homeAddress = new Address(street, zipcode, city);
+            newUser.setHomeAddress(homeAddress);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+    }
+
+    public static void createNewShippingAddress(User newUser, String street, String zipcode, String city) {
+        try {
+            Address homeAddress = new Address(street, zipcode, city);
+            newUser.setHomeAddress(homeAddress);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
     }
 
     @Override
