@@ -45,7 +45,7 @@ public class Item {
         }
         if (seller.getDefaultBillingDetails() != null) {
             this.seller = seller;
-        }
+        } else System.out.println("Нельзя поставить селлером пацан без платёжных реквизитов");
 
         this.state = state;
 
