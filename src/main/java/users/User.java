@@ -1,19 +1,14 @@
 package users;
 
+import enums.ItemState;
 import items.Item;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    public User(String firstName, String lastName, String userName, String password, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.email = email;
-    }
-
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
     private BillingDetails defaultBillingDetails;   // Указываем, что у юзера есть платёжные реквизиты по умолчанию
     private List<Item> boughtItems = new ArrayList<>();
@@ -28,6 +23,14 @@ public class User {
     private String email;
     private int ranking = 0;
     private boolean admin = false;
+
+    public User(String firstName, String lastName, String userName, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+    }
 
     public Address getShippingAddress() {
         return shippingAddress;
@@ -59,6 +62,55 @@ public class User {
     public void setDefaultBillingDetails(BillingDetails defaultBillingDetails) {
         this.defaultBillingDetails = defaultBillingDetails;
     }
+
+
+    public void addNewItem(String name,
+                           String description, Long initialPrice,
+                           String startDate, String endDate, String approvalDatetime,
+                           ItemState state) {
+        if (defaultBillingDetails == null){
+            throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
+        }
+        Item item = new Item();
+        item.setName(name);
+        item.setDescription(description);
+        item.setInitialPrice(initialPrice);
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            item.setStartDate(format.parse(startDate));
+            item.setEndDate(format.parse(endDate));
+            item.setApprovalDatetime(format.parse(approvalDatetime));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        item.setSeller(this);
+
+        item.setState(state);
+
+
+//
+//
+//
+//            this.name = name;
+//            this.description = description;
+//            this.initialPrice = initialPrice;
+//            DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+//            try {
+//                this.startDate = format.parse(startDate);
+//                this.endDate = format.parse(endDate);
+//                this.approvalDatetime = format.parse(approvalDatetime);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            if (seller.getDefaultBillingDetails() != null) {
+//                this.seller = seller;
+//            } else throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
+
+//            this.state = state;
+
+    }
+
 
     @Override
     public String toString() {

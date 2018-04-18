@@ -24,32 +24,31 @@ public class Item {
     private Date approvalDatetime;
     private ItemState state;
     private List<Categoty> categotyList = new ArrayList<>();
-
-
     private User seller;
 
-    public Item(String name,
-                String description, Long initialPrice,
-                String startDate, String endDate, String approvalDatetime, User seller,
-                ItemState state) {
-        this.name = name;
-        this.description = description;
-        this.initialPrice = initialPrice;
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            this.startDate = format.parse(startDate);
-            this.endDate = format.parse(endDate);
-            this.approvalDatetime = format.parse(approvalDatetime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (seller.getDefaultBillingDetails() != null) {
-            this.seller = seller;
-        } else System.out.println("Нельзя поставить селлером пацан без платёжных реквизитов");
-
-        this.state = state;
-
-    }
+//    public Item(String name,
+//                String description, Long initialPrice,
+//                String startDate, String endDate, String approvalDatetime, User seller,
+//                ItemState state) {
+//        this.name = name;
+//        this.description = description;
+//        this.initialPrice = initialPrice;
+//        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+//        try {
+//            this.startDate = format.parse(startDate);
+//            this.endDate = format.parse(endDate);
+//            this.approvalDatetime = format.parse(approvalDatetime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        if (seller.getDefaultBillingDetails() != null) {
+//            this.seller = seller;
+//        } else {
+//            throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
+//        }
+//        this.state = state;
+//
+//    }
 
 
     public void addBid(Bid bid) {
