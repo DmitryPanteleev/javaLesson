@@ -68,6 +68,9 @@ public class Item {
     }
 
     public void addCategory(Categoty categoty) {
+
+
+
         categotyList.add(categoty);
     }
 
