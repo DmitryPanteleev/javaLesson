@@ -3,7 +3,7 @@ package items;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Categoty {
+public class Categoty extends Throwable {
 
     private String name;
     private Categoty parent;
@@ -20,8 +20,13 @@ public class Categoty {
     }
 
     public void setParent(Categoty parent) {
-        this.parent = parent;
-        this.level = parent.level + 1;
+
+        if (parent.level + 1 > 5) {
+            throw new IllegalArgumentException("Нельзя назаначить категорию больше уровня 5");
+        } else {
+            this.parent = parent;
+            this.level = parent.level + 1;
+        }
     }
 
     public void setName(String name) {
