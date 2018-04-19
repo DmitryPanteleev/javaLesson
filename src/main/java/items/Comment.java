@@ -3,34 +3,24 @@ package items;
 import enums.Rating;
 import users.User;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Comment {
 
     private String text;
-    private Date created;
+    private LocalDate creatingDate;
     private Rating rating;
 
     private User commentator;
     private Item item;
 
-    public void setText(String text) {
+    public Comment(String text, Rating rating, User commentator, Item item) {
         this.text = text;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public void setRating(Rating rating) {
+        this.creatingDate = LocalDate.now();
         this.rating = rating;
-    }
-
-    public void setCommentator(User commentator) {
         this.commentator = commentator;
-    }
-
-    public void setCommentItem(Item item) {
         this.item = item;
     }
 }
+

@@ -12,7 +12,14 @@ public class Categoty extends Throwable {
     private int level = 1;
 
     public Categoty(String name) {
-        this.name = name;
+        if (this.equals(DefaultCategory.categotyListName.iterator())) {
+            this.name = name;
+            DefaultCategory.categotyListName.add(this);
+        }else return;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public List<Item> getItems() {

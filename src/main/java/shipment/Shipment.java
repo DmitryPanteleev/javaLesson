@@ -5,13 +5,14 @@ import items.Item;
 import users.Address;
 import users.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Shipment {
 
     private int inspectionPeriodDays;
     private ShipmentState state;
-    private Date created;
+    private LocalDate created = LocalDate.now();
     private Item item;
     private User buyer;
     private User seller;
@@ -41,9 +42,7 @@ public class Shipment {
         this.state = state;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+
 
 
 }

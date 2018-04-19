@@ -1,12 +1,15 @@
 package users;
 
 import enums.ItemState;
+import items.Categoty;
 import items.Item;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
+import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class User {
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
@@ -66,8 +69,9 @@ public class User {
 
     public void addNewItem(String name,
                            String description, Long initialPrice,
-                           String startDate, String endDate, String approvalDatetime,
-                           ItemState state) {
+                           int endDateyear, int endDateMonth, int endDateDay,
+                           int approvalDatetimeYear, int approvalDatetimeMonth, int approvalDatetimeDay,
+                           ItemState state, Categoty categoty) {
         if (defaultBillingDetails == null){
             throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
         }
@@ -75,39 +79,14 @@ public class User {
         item.setName(name);
         item.setDescription(description);
         item.setInitialPrice(initialPrice);
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            item.setStartDate(format.parse(startDate));
-            item.setEndDate(format.parse(endDate));
-            item.setApprovalDatetime(format.parse(approvalDatetime));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        item.setStartDate(LocalDate.now());
+        item.setEndDate(LocalDate.of(endDateyear, endDateMonth, endDateDay));
+        item.setApprovalDatetime(LocalDate.of(approvalDatetimeYear, approvalDatetimeMonth, approvalDatetimeDay));
+        item.setCategoty(categoty);
         item.setSeller(this);
 
         item.setState(state);
 
-
-//
-//
-//
-//            this.name = name;
-//            this.description = description;
-//            this.initialPrice = initialPrice;
-//            DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-//            try {
-//                this.startDate = format.parse(startDate);
-//                this.endDate = format.parse(endDate);
-//                this.approvalDatetime = format.parse(approvalDatetime);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            if (seller.getDefaultBillingDetails() != null) {
-//                this.seller = seller;
-//            } else throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
-
-//            this.state = state;
 
     }
 
