@@ -23,6 +23,7 @@ public class Item {
     private ItemState state;
     private List<Categoty> categotyList = new ArrayList<>();
     private User seller;
+
     public Item(String name, String description,
                 Long initialPrice,
                 int endDateyear, int endDateMonth, int endDateDay,
@@ -37,6 +38,16 @@ public class Item {
         this.state = state;
         setCategoty(categoty);
         this.seller = seller;
+        ItemList.setItem(this);
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getEndDate() {
@@ -67,10 +78,6 @@ public class Item {
         this.reservePrice = reservePrice;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     private void setCategoty(Categoty categoty) {
         if (categoty.getLevel() > 2) {
             //Добавляем в список котегорий товара его категорию
@@ -78,10 +85,6 @@ public class Item {
             //Добавляем в список товаров у категории её товар
             categoty.addItem(this);
         } else throw new IllegalArgumentException("Выберете подкатегорию уровня 3 и ниже");
-    }
-
-    public void setApprovalDatetime(LocalDate approvalDatetime) {
-        this.approvalDatetime = approvalDatetime;
     }
 
     public void addBid(Bid bid) {
@@ -92,20 +95,16 @@ public class Item {
         return seller;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public LocalDate getApprovalDatetime() {
+        return approvalDatetime;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    //Окончание аукциона***************************************************
+    private void auctiOn() {
+        if (LocalDate.now().equals(this.getEndDate())) {
+            bidList.get(bidList.size() - 1).getCreator().addBoughtItem(this);
+            approvalDatetime = LocalDate.now();
 
-    public void setDescription(String description) {
-        this.description = description;
+        }
     }
-
-    public void setState(ItemState state) {
-        this.state = state;
-    }
-
 }

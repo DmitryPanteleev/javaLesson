@@ -9,18 +9,17 @@ import java.time.LocalDate;
 public class Comment {
 
     private String text;
-    private LocalDate creatingDate;
+    private LocalDate creatingDate = LocalDate.now();
     private Rating rating;
-
-    private User commentator;
     private Item item;
-
-    public Comment(String text, Rating rating, User commentator, Item item) {
+    private User commentator;
+    public Comment(String text, Rating rating, Item item, User commentator) {
         this.text = text;
-        this.creatingDate = LocalDate.now();
         this.rating = rating;
-        this.commentator = commentator;
         this.item = item;
+        this.commentator = commentator;
     }
+
+
 }
 

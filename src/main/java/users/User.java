@@ -1,8 +1,11 @@
 package users;
 
 import enums.ItemState;
+import enums.Rating;
 import items.Categoty;
+import items.Comment;
 import items.Item;
+import items.ItemList;
 import shipment.Bid;
 
 import java.time.LocalDate;
@@ -13,8 +16,8 @@ import java.util.function.DoubleToLongFunction;
 public class User {
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
     private BillingDetails defaultBillingDetails;   // Указываем, что у юзера есть платёжные реквизиты по умолчанию
-    private List<Item> boughtItems = new ArrayList<>();
-    private List<Item> soldItems = new ArrayList<>();
+    private List<Item> boughtItems = new ArrayList<>();//Список купленных товаров
+    private List<Item> soldItems = new ArrayList<>();//Список проданных товаров
     private Address homeAddress;
     private Address billingAddress;
     private Address shippingAddress;
@@ -169,7 +172,7 @@ public class User {
     public void addBid(Long percent, Item item) {
 
 
-        //роверяю не кончилась ли продажа
+        //Проверяю не кончилась ли продажа
 
         if (item.getEndDate().isBefore(LocalDate.now())) {
             throw new StringIndexOutOfBoundsException("Время делать ставки прошло, Slowpoke");
@@ -204,5 +207,21 @@ public class User {
 
     }
 
-
+    //Добавляем комментарий
+    public void addComment(String text, Rating rating, String itemName) {
+        Item item = ItemList.getItem(itemName);
+        try {
+            if (item == null) throw new NullPointerException("Не найден товар в списке купленных");
+        }catch (Exception e){
+            throw e;
+        }
+        for (Item items :
+                boughtItems) {
+            if (items.equals(item)) {
+                if (LocalDate.now().compareTo(item.getApprovalDatetime()) <= 14) {
+                    new Comment(text, rating, item, this);
+                }
+            }
+        }
+    }
 }

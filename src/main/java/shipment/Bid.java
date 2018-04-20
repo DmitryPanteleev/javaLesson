@@ -20,20 +20,12 @@ public class Bid {
 
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
     public LocalDate getCreated() {
         return created;
-    }
-
-    public Long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
     }
 
 }
