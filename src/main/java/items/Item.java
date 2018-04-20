@@ -21,9 +21,38 @@ public class Item {
     private LocalDate approvalDatetime;
     private ItemState state;
     private List<Categoty> categotyList = new ArrayList<>();
-
-
     private User seller;
+    public Item(String name, String description,
+                Long initialPrice,
+                int endDateyear, int endDateMonth, int endDateDay,
+                int approvalDatetimeYear, int approvalDatetimeMonth, int approvalDatetimeDay,
+                ItemState state, Categoty categoty, User seller) {
+        this.name = name;
+        this.description = description;
+        this.initialPrice = initialPrice;
+        this.startDate = LocalDate.now();
+        this.endDate = LocalDate.of(endDateyear, endDateMonth, endDateDay);
+        this.approvalDatetime = LocalDate.of(approvalDatetimeYear, approvalDatetimeMonth, approvalDatetimeDay);
+        this.state = state;
+        setCategoty(categoty);
+        this.seller = seller;
+    }
+
+    public Long getInitialPrice() {
+        return initialPrice;
+    }
+
+    public void setInitialPrice(Long initialPrice) {
+        this.initialPrice = initialPrice;
+    }
+
+    public Long getReservePrice() {
+        return reservePrice;
+    }
+
+    public void setReservePrice(Long reservePrice) {
+        this.reservePrice = reservePrice;
+    }
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
@@ -32,10 +61,10 @@ public class Item {
     public void setCategoty(Categoty categoty) {
         if (categoty.getLevel() > 2) {
             //Добавляем в список котегорий товара его категорию
-            this.categotyList.add(categoty);
+            categotyList.add(categoty);
             //Добавляем в список товаров у категории её товар
             categoty.addItem(this);
-        }else throw new IllegalArgumentException("Выберете подкатегорию уровня 3 и ниже");
+        } else throw new IllegalArgumentException("Выберете подкатегорию уровня 3 и ниже");
     }
 
     public void setEndDate(LocalDate endDate) {
@@ -64,14 +93,6 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setInitialPrice(Long initialPrice) {
-        this.initialPrice = initialPrice;
-    }
-
-    public void setReservePrice(Long reservePrice) {
-        this.reservePrice = reservePrice;
     }
 
     public void setState(ItemState state) {

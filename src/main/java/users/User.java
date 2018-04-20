@@ -3,6 +3,7 @@ package users;
 import enums.ItemState;
 import items.Categoty;
 import items.Item;
+import shipment.Bid;
 
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.DoubleToLongFunction;
 
 public class User {
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
@@ -68,25 +70,16 @@ public class User {
 
 
     public void addNewItem(String name,
-                           String description, Long initialPrice,
+                           String description, Long initialPrice, Long resrvePrice,
                            int endDateyear, int endDateMonth, int endDateDay,
                            int approvalDatetimeYear, int approvalDatetimeMonth, int approvalDatetimeDay,
                            ItemState state, Categoty categoty) {
-        if (defaultBillingDetails == null){
-            throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
-        }
-        Item item = new Item();
-        item.setName(name);
-        item.setDescription(description);
-        item.setInitialPrice(initialPrice);
-        item.setStartDate(LocalDate.now());
-        item.setEndDate(LocalDate.of(endDateyear, endDateMonth, endDateDay));
-        item.setApprovalDatetime(LocalDate.of(approvalDatetimeYear, approvalDatetimeMonth, approvalDatetimeDay));
-        item.setCategoty(categoty);
-        item.setSeller(this);
+        if (defaultBillingDetails == null){throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));}
 
-        item.setState(state);
-
+        new Item(name,description,initialPrice,
+                endDateyear,endDateMonth,endDateDay,
+                approvalDatetimeYear,approvalDatetimeMonth,approvalDatetimeDay,
+                state,categoty,this);
 
     }
 
@@ -171,6 +164,34 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    //Добавляем ставку на товар
+    public void addBid(Long percent, Item item) {
+        Long amount;
+
+        //Проверяю есть ли ставки. Если есть беру последнюю если нет беру стартовую цену
+        if (item.getReservePrice() != null) {
+            amount = item.getReservePrice();
+        } else {
+            amount = item.getInitialPrice();
+        }
+
+        //Получаю итоговую ставку с учётом процента повышения в дабл формате
+        double totalAmountDouble = (percent * 0.01 * amount) + amount;
+
+        //Перевожу итоговую ставку с учётом процента из дабла в лонг.
+        DoubleToLongFunction doubleToLongFunction = new DoubleToLongFunction() {
+            @Override
+            public long applyAsLong(double value) {
+
+                return (long) value;
+            }
+        };
+        Long totalAmountLong = doubleToLongFunction.applyAsLong(totalAmountDouble);
+
+        new Bid(totalAmountLong,this, item);
+
     }
 
 
