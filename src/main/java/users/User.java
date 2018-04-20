@@ -5,12 +5,9 @@ import items.Categoty;
 import items.Item;
 import shipment.Bid;
 
-
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.DoubleToLongFunction;
 
 public class User {
@@ -64,7 +61,7 @@ public class User {
         return defaultBillingDetails;
     }
 
-    public void setDefaultBillingDetails(BillingDetails defaultBillingDetails) {
+    private void setDefaultBillingDetails(BillingDetails defaultBillingDetails) {
         this.defaultBillingDetails = defaultBillingDetails;
     }
 
@@ -74,12 +71,14 @@ public class User {
                            int endDateyear, int endDateMonth, int endDateDay,
                            int approvalDatetimeYear, int approvalDatetimeMonth, int approvalDatetimeDay,
                            ItemState state, Categoty categoty) {
-        if (defaultBillingDetails == null){throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));}
+        if (defaultBillingDetails == null) {
+            throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
+        }
 
-        new Item(name,description,initialPrice,
-                endDateyear,endDateMonth,endDateDay,
-                approvalDatetimeYear,approvalDatetimeMonth,approvalDatetimeDay,
-                state,categoty,this);
+        new Item(name, description, initialPrice,
+                endDateyear, endDateMonth, endDateDay,
+                approvalDatetimeYear, approvalDatetimeMonth, approvalDatetimeDay,
+                state, categoty, this);
 
     }
 
@@ -102,7 +101,7 @@ public class User {
                 '}';
     }
 
-    public void setHomeAddress(Address address) {
+    void setHomeAddress(Address address) {
         this.homeAddress = address;
     }
 
@@ -166,31 +165,42 @@ public class User {
         this.admin = admin;
     }
 
-    //Добавляем ставку на товар
+    //Добавляем ставку на товар*********************************************************************************
     public void addBid(Long percent, Item item) {
-        Long amount;
 
-        //Проверяю есть ли ставки. Если есть беру последнюю если нет беру стартовую цену
-        if (item.getReservePrice() != null) {
-            amount = item.getReservePrice();
-        } else {
-            amount = item.getInitialPrice();
+
+        //роверяю не кончилась ли продажа
+
+        if (item.getEndDate().isBefore(LocalDate.now())) {
+            throw new StringIndexOutOfBoundsException("Время делать ставки прошло, Slowpoke");
         }
 
-        //Получаю итоговую ставку с учётом процента повышения в дабл формате
-        double totalAmountDouble = (percent * 0.01 * amount) + amount;
+        //Проверяю процент percent
+        if (percent < 1) {
+            throw new StringIndexOutOfBoundsException("Нельзя ставить процент меньше 1");
+        }
+
+        //Проверяю не продовец ли это мухлюет
+        if (item.getSeller() == this) {
+            throw new ExceptionInInitializerError("Продавец не может купить свой товар");
+        }
+
+        //Проверяю делал ли сегодня ставку на этот товар
+        for (Bid bid : item.getBidList()) {
+            if (bid.getCreated() == LocalDate.now()) {
+                throw new IllegalArgumentException("Сегодня ставка уже сделана");
+            }
+        }
+
+        //Получаю итоговую ставку (процент от стартовой цены + предыдущая ставка)
+        double totalAmountDouble = (percent * 0.01 * item.getInitialPrice()) + item.getReservePrice();
 
         //Перевожу итоговую ставку с учётом процента из дабла в лонг.
-        DoubleToLongFunction doubleToLongFunction = new DoubleToLongFunction() {
-            @Override
-            public long applyAsLong(double value) {
-
-                return (long) value;
-            }
-        };
+        DoubleToLongFunction doubleToLongFunction = value -> (long) value;
         Long totalAmountLong = doubleToLongFunction.applyAsLong(totalAmountDouble);
 
-        new Bid(totalAmountLong,this, item);
+
+        new Bid(totalAmountLong, this, item);
 
     }
 

@@ -10,12 +10,13 @@ import java.util.List;
 
 public class Item {
 
+
     private List<Bid> bidList = new ArrayList<>();
     //    private Bid successfulBid;
     private String name;
     private String description;
     private Long initialPrice;
-    private Long reservePrice;
+    private Long reservePrice = initialPrice;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate approvalDatetime;
@@ -38,6 +39,18 @@ public class Item {
         this.seller = seller;
     }
 
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<Bid> getBidList() {
+        return bidList;
+    }
+
     public Long getInitialPrice() {
         return initialPrice;
     }
@@ -58,17 +71,13 @@ public class Item {
         this.startDate = startDate;
     }
 
-    public void setCategoty(Categoty categoty) {
+    private void setCategoty(Categoty categoty) {
         if (categoty.getLevel() > 2) {
             //Добавляем в список котегорий товара его категорию
             categotyList.add(categoty);
             //Добавляем в список товаров у категории её товар
             categoty.addItem(this);
         } else throw new IllegalArgumentException("Выберете подкатегорию уровня 3 и ниже");
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 
     public void setApprovalDatetime(LocalDate approvalDatetime) {
@@ -98,6 +107,5 @@ public class Item {
     public void setState(ItemState state) {
         this.state = state;
     }
-
 
 }

@@ -11,14 +11,17 @@ public class Bid {
     private LocalDate created = LocalDate.now();
     private User creator;
     private Item item;
-
-
-
     public Bid(Long amount, User creator, Item item) {
         this.amount = amount;
+        item.setReservePrice(amount);
         this.creator = creator;
         this.item = item;
         item.addBid(this);
+
+    }
+
+    public LocalDate getCreated() {
+        return created;
     }
 
     public Long getAmount() {
