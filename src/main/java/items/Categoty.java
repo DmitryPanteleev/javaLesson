@@ -1,6 +1,7 @@
 package items;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Categoty extends Throwable {
@@ -12,10 +13,40 @@ public class Categoty extends Throwable {
     private int level = 1;
 
     public Categoty(String name) {
-        if (this.equals(DefaultCategory.categotyListName.iterator())) {
+        if (DefaultCategory.categotyListName.size() == 0) {
             this.name = name;
             DefaultCategory.categotyListName.add(this);
-        }else return;
+        } else
+            for (Categoty c :
+                    DefaultCategory.categotyListName) {
+
+                if (!name.equals(c.name)) {
+                    this.name = name;
+                    DefaultCategory.categotyListName.add(this);
+                    break;
+                } else throw new IllegalArgumentException("Такой каталог уже существует");
+
+            }
+    }
+
+    public Categoty(String categoryName, Categoty parentCategory) {
+        Iterator<Categoty> iterator = DefaultCategory.categotyListName.iterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().name.equals(categoryName)) {
+                this.name = categoryName;
+                DefaultCategory.categotyListName.add(this);
+                this.setParent(parentCategory);
+                break;
+            } else throw new IllegalArgumentException("Такой каталог уже существует");
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getLevel() {
@@ -33,11 +64,8 @@ public class Categoty extends Throwable {
         } else {
             this.parent = parent;
             this.level = parent.level + 1;
+            parent.addChildCategory(this);
         }
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Categoty addChildCategory(Categoty childCategory) {

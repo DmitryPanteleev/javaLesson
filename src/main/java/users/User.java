@@ -17,7 +17,7 @@ public class User {
     private List<BillingDetails> billingDetailsList = new ArrayList<>(); //Создаём список платёжных реквизитов
     private BillingDetails defaultBillingDetails;   // Указываем, что у юзера есть платёжные реквизиты по умолчанию
     private List<Item> boughtItems = new ArrayList<>();//Список купленных товаров
-    private List<Item> soldItems = new ArrayList<>();//Список проданных товаров
+    private List<Item> soldItems = new ArrayList<>();//Список ПРОДАЮЩИХСЯ товаров
     private Address homeAddress;
     private Address billingAddress;
     private Address shippingAddress;
@@ -37,12 +37,12 @@ public class User {
         this.email = email;
     }
 
-    public Address getShippingAddress() {
-        return shippingAddress;
+    public List<Item> getSoldItems() {
+        return soldItems;
     }
 
-    public void setShippingAddress(Address address) {
-        this.shippingAddress = address;
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 
     public void addBoughtItem(Item item) {
@@ -70,17 +70,17 @@ public class User {
 
 
     public void addNewItem(String name,
-                           String description, Long initialPrice, Long resrvePrice,
+                           String description,
+                           Long initialPrice,
                            int endDateyear, int endDateMonth, int endDateDay,
-                           int approvalDatetimeYear, int approvalDatetimeMonth, int approvalDatetimeDay,
-                           ItemState state, Categoty categoty) {
+                           ItemState state,
+                           Categoty categoty) {
         if (defaultBillingDetails == null) {
             throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
         }
 
         new Item(name, description, initialPrice,
                 endDateyear, endDateMonth, endDateDay,
-                approvalDatetimeYear, approvalDatetimeMonth, approvalDatetimeDay,
                 state, categoty, this);
 
     }
@@ -116,52 +116,24 @@ public class User {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getRanking() {
-        return ranking;
-    }
-
     public void setRanking(int ranking) {
         this.ranking = ranking;
-    }
-
-    public boolean isAdmin() {
-        return admin;
     }
 
     public void setAdmin(boolean admin) {
@@ -169,30 +141,37 @@ public class User {
     }
 
     //Добавляем ставку на товар*********************************************************************************
-    public void addBid(Long percent, Item item) {
+    public void addBid(Long percent, String itemName)throws Exception {
+
+        Item item = ItemList.getItem(itemName);
 
 
         //Проверяю не кончилась ли продажа
 
-        if (item.getEndDate().isBefore(LocalDate.now())) {
-            throw new StringIndexOutOfBoundsException("Время делать ставки прошло, Slowpoke");
+        if (item != null && item.getEndDate().isBefore(LocalDate.now())) {
+            throw new Exception("Время делать ставки прошло, Slowpoke");
         }
 
         //Проверяю процент percent
         if (percent < 1) {
-            throw new StringIndexOutOfBoundsException("Нельзя ставить процент меньше 1");
+            throw new Exception("Нельзя ставить процент меньше 1");
         }
 
         //Проверяю не продовец ли это мухлюет
         if (item.getSeller() == this) {
-            throw new ExceptionInInitializerError("Продавец не может купить свой товар");
+            throw new Exception("Продавец не может купить свой товар");
         }
 
         //Проверяю делал ли сегодня ставку на этот товар
         for (Bid bid : item.getBidList()) {
             if (bid.getCreated() == LocalDate.now()) {
-                throw new IllegalArgumentException("Сегодня ставка уже сделана");
+                throw new Exception("Сегодня ставка уже сделана");
             }
+        }
+
+        //Защищаем резерв прайс от нуля
+        if (item.getReservePrice() == null) {
+            item.setReservePrice(item.getInitialPrice());
         }
 
         //Получаю итоговую ставку (процент от стартовой цены + предыдущая ставка)
@@ -212,7 +191,7 @@ public class User {
         Item item = ItemList.getItem(itemName);
         try {
             if (item == null) throw new NullPointerException("Не найден товар в списке купленных");
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
         for (Item items :
@@ -223,5 +202,11 @@ public class User {
                 }
             }
         }
+    }
+
+    //Добавляем категорию
+    public void addCategory(String nameItem, String nameCategory, Categoty nameParrentCategory) {
+        ItemList.getItem(nameItem).getCategotyList().add(new Categoty(nameCategory, nameParrentCategory));
+
     }
 }

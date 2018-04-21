@@ -16,31 +16,34 @@ public class Item {
     private String name;
     private String description;
     private Long initialPrice;
-    private Long reservePrice = initialPrice;
+    private Long reservePrice;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate approvalDatetime;
     private ItemState state;
     private List<Categoty> categotyList = new ArrayList<>();
     private User seller;
-
     public Item(String name, String description,
                 Long initialPrice,
                 int endDateyear, int endDateMonth, int endDateDay,
-                int approvalDatetimeYear, int approvalDatetimeMonth, int approvalDatetimeDay,
                 ItemState state, Categoty categoty, User seller) {
         this.name = name;
         this.description = description;
         this.initialPrice = initialPrice;
         this.startDate = LocalDate.now();
         this.endDate = LocalDate.of(endDateyear, endDateMonth, endDateDay);
-        this.approvalDatetime = LocalDate.of(approvalDatetimeYear, approvalDatetimeMonth, approvalDatetimeDay);
         this.state = state;
         setCategoty(categoty);
         this.seller = seller;
         ItemList.setItem(this);
+        seller.addSoldItem(this);
+        auctiOn();
+
     }
 
+    public List<Categoty> getCategotyList() {
+        return categotyList;
+    }
 
     public String getName() {
         return name;
@@ -66,10 +69,6 @@ public class Item {
         return initialPrice;
     }
 
-    public void setInitialPrice(Long initialPrice) {
-        this.initialPrice = initialPrice;
-    }
-
     public Long getReservePrice() {
         return reservePrice;
     }
@@ -87,11 +86,16 @@ public class Item {
         } else throw new IllegalArgumentException("Выберете подкатегорию уровня 3 и ниже");
     }
 
+    private void addCategory(String categoryName, Categoty parrentCategory) {
+
+    }
+
     public void addBid(Bid bid) {
         bidList.add(bid);
     }
 
     public User getSeller() {
+
         return seller;
     }
 
@@ -101,9 +105,10 @@ public class Item {
 
     //Окончание аукциона***************************************************
     private void auctiOn() {
-        if (LocalDate.now().equals(this.getEndDate())) {
+        if (LocalDate.now().equals(this.getEndDate()) || bidList.size() != 0) {
             bidList.get(bidList.size() - 1).getCreator().addBoughtItem(this);
             approvalDatetime = LocalDate.now();
+            seller.getSoldItems().remove(this);
 
         }
     }
