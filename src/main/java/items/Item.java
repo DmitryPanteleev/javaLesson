@@ -1,7 +1,9 @@
 package items;
 
 import enums.ItemState;
+import enums.ShipmentState;
 import shipment.Bid;
+import shipment.Shipment;
 import users.User;
 
 import java.time.LocalDate;
@@ -107,8 +109,12 @@ public class Item {
     private void auctiOn() {
         if (LocalDate.now().equals(this.getEndDate()) || bidList.size() != 0) {
             bidList.get(bidList.size() - 1).getCreator().addBoughtItem(this);
+            User creator = bidList.get(bidList.size() - 1).getCreator();
             approvalDatetime = LocalDate.now();
             seller.getSoldItems().remove(this);
+            new Shipment(ShipmentState.PENDING,this,
+                    creator,
+                    getSeller(),creator.getShippingAddress());
 
         }
     }

@@ -164,7 +164,7 @@ public class User {
 
         //Проверяю делал ли сегодня ставку на этот товар
         for (Bid bid : item.getBidList()) {
-            if (bid.getCreated() == LocalDate.now()) {
+            if (bid.getCreated().getDayOfYear() == LocalDate.now().getDayOfYear()) {
                 throw new Exception("Сегодня ставка уже сделана");
             }
         }
@@ -187,23 +187,41 @@ public class User {
     }
 
     //Добавляем комментарий
-    public void addComment(String text, Rating rating, String itemName) {
+    public void addComment(String text, Rating rating, String itemName) throws Exception {
         Item item = ItemList.getItem(itemName);
+        Item boughtItem = null;
         try {
-            if (item == null) throw new NullPointerException("Не найден товар в списке купленных");
+            if (item == null) throw new Exception("Не найден товар");
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
-        for (Item items :
-                boughtItems) {
-            if (items.equals(item)) {
-                if (LocalDate.now().compareTo(item.getApprovalDatetime()) <= 14) {
-                    new Comment(text, rating, item, this);
+//        try {
+            if (boughtItems.size() == 0) throw new Exception("Список покупок пуст");
+            for (Item items :
+                    boughtItems) {
+                if (items.equals(item)) {
+                    boughtItem = items;
+                    if (LocalDate.now().getDayOfYear() - item.getApprovalDatetime().getDayOfYear() <= 14) {
+                        new Comment(text, rating, item, this);
+                    } else
+                        try {
+                        throw new Exception("Прошло больше 14 дней с момента покупки");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw e;
+                    }
                 }
             }
-        }
-    }
+            if (boughtItem == null) {
+                throw new Exception("Товар не найден в списке купленных");
 
+            }
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
+    }
     //Добавляем категорию
     public void addCategory(String nameItem, String nameCategory, Categoty nameParrentCategory) {
         ItemList.getItem(nameItem).getCategotyList().add(new Categoty(nameCategory, nameParrentCategory));

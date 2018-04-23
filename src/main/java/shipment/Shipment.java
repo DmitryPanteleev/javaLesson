@@ -6,11 +6,10 @@ import users.Address;
 import users.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Shipment {
 
-    private int inspectionPeriodDays;
+    private int inspectionPeriodDays = 5;
     private ShipmentState state;
     private LocalDate created = LocalDate.now();
     private Item item;
@@ -18,31 +17,17 @@ public class Shipment {
     private User seller;
     private Address deliveryAddress;
 
-    public void setItem(Item item) {
+    public Shipment(ShipmentState state, Item item, User buyer, User seller, Address deliveryAddress) {
+        this.state = state;
         this.item = item;
-    }
-
-    public void setBuyer(User buyer) {
         this.buyer = buyer;
-    }
-
-    public void setSeller(User seller) {
         this.seller = seller;
-    }
-
-    public void setDeliveryAddress(Address deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
-    }
-
-    public void setInspectionPeriodDays(int inspectionPeriodDays) {
-        this.inspectionPeriodDays = inspectionPeriodDays;
     }
 
     public void setState(ShipmentState state) {
         this.state = state;
     }
-
-
 
 
 }
