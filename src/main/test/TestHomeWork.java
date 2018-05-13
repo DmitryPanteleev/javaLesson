@@ -3,7 +3,14 @@ import enums.ItemState;
 import enums.Rating;
 import items.Categoty;
 import items.DefaultCategory;
-import items.ItemList;
+//import myException.bidException;
+//import myException.myItemException.itemNotFound;
+//import myException.*;
+//import myException.myUserException.nullBillingDetailException;
+//import myException.myUserException.shoppingListEmptyException;
+import myException.myBidException.*;
+import myException.myUserException.*;
+import myException.myItemException.*;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,12 +64,12 @@ public class TestHomeWork {
         //Создаём товар и добавляем категории
         {
             seller.addNewItem("IBM", "good pc",
-                    5000L, 2018, 04, 26,
+                    5000L, 2018, 05, 26,
                     ItemState.STOCK, defaultCategory.windows);
             seller.addCategory("IBM", "OldPC", defaultCategory.windows);
 
             seller.addNewItem("Орион", "very beautiful tv",
-                    1000L, 2018, 04, 22, ItemState.STOCK,
+                    1000L, 2017, 12, 12, ItemState.STOCK,
                     defaultCategory.hd);
         }
 
@@ -84,36 +91,26 @@ public class TestHomeWork {
         //Не вижу смысл дальше проверять поля, научиться делать генерацию тестов
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIlligalArgumentSeller() {
+//   Проверяем продавца на отсутствие реквизитов
+    @Test(expected = nullBillingDetailException.class)
+    public void nullBillingDetailExceptionSeller() throws Exception {
 
-        try {
             seller2.addNewItem("Орион2", "very beautiful tv",
                     1000L, 2018, 04, 21, ItemState.STOCK,
                     defaultCategory.hd);
-
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            throw e;
-        }
-
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCategory() {
+    @Test(expected = Exception.class)
+    public void testCategory() throws Exception {
 
         Categoty categoty4Level = new Categoty("testCategory");
         Categoty categoty5Level = new Categoty("testCategory2");
         Categoty categoty6Level = new Categoty("testCategory3");
         categoty4Level.setParent(defaultCategory.hd);
         categoty5Level.setParent(categoty4Level);
-        try {
+
             categoty6Level.setParent(categoty5Level);
-//            Categoty categotyDupelgunger = new Categoty("testCategory");
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            throw e;
-        }
+
     }
 
 //    @Test
@@ -123,14 +120,11 @@ public class TestHomeWork {
 //        buyer.addBid(50L, "IBM");
 //    }
 
-    @Test(expected = Exception.class)
-    public void testPercent() throws Exception {
-        try {
+    @Test(expected = bidPricePercentLowException.class)
+    public void bidPricePercentLowException() throws Exception {
+
             buyer.addBid(0L, "IBM");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+
     }
 
 //    @Test
@@ -138,42 +132,33 @@ public class TestHomeWork {
 //        buyer.addBid((long) 5,"IBM");
 //    }
 
-    @Test(expected = Exception.class)
-    public void testBidExceptionDay() throws Exception {
-        try {
+// Две ставки в день
+    @Test(expected = twoBidDayException.class)
+    public void twoBidDayException() throws Exception {
+
             buyer.addBid((long) 5,"IBM");
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
-    @Test(expected = Exception.class)
-    public void testBidExceptionSeller() throws Exception {
-        try {
+    }
+// Продавец делает ставку на свой товар
+    @Test(expected = sellerBuySellerException.class)
+    public void sellerBuySellerException() throws Exception {
+
             seller.addBid((long) 5,"IBM");
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
     }
-
-    @Test(expected = Exception.class)
-    public void testBidExceptionOldItem() throws Exception {
-        try {
+// Товар уже не продаётся
+    @Test(expected = bidTimeOverException.class)
+    public void bidTimeOverException() throws Exception {
             buyer.addBid((long) 5,"Орион");
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
     }
-
-    @Test(expected = Exception.class)
-    public void testAddComment()throws Exception {
+// Список покупок пуст
+    @Test(expected = shoppingListEmptyException.class)
+    public void shoppingListEmptyException() throws Exception {
 
             buyer.addComment("Comment", Rating.HIGH, "Орион");
 
     }
+
+
 
 
 

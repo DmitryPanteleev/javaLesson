@@ -6,6 +6,13 @@ import items.Categoty;
 import items.Comment;
 import items.Item;
 import items.ItemList;
+//import myException.*;
+import myException.myItemException.*;
+
+import myException.myUserException.*;
+
+import myException.myBidException.*;
+
 import shipment.Bid;
 
 import java.time.LocalDate;
@@ -74,9 +81,12 @@ public class User {
                            Long initialPrice,
                            int endDateyear, int endDateMonth, int endDateDay,
                            ItemState state,
-                           Categoty categoty) {
+                           Categoty categoty) throws Exception {
         if (defaultBillingDetails == null) {
-            throw (new IllegalArgumentException("Нельзя поставить селлером пацанa без платёжных реквизитов"));
+            throw new nullBillingDetailException("Нельзя поставить селлером пацанa без платёжных реквизитов");
+        }
+        if (initialPrice < 1) {
+            throw new nullPriceException("Price <= 0 " + userName);
         }
 
         new Item(name, description, initialPrice,
@@ -141,7 +151,7 @@ public class User {
     }
 
     //Добавляем ставку на товар*********************************************************************************
-    public void addBid(Long percent, String itemName)throws Exception {
+    public void addBid(Long percent, String itemName) throws Exception {
 
         Item item = ItemList.getItem(itemName);
 
@@ -149,25 +159,24 @@ public class User {
         //Проверяю не кончилась ли продажа
 
         if (item != null && item.getEndDate().isBefore(LocalDate.now())) {
-            throw new Exception("Время делать ставки прошло, Slowpoke");
+            throw new bidTimeOverException("Время делать ставки прошло, Slowpoke");
         }
 
         //Проверяю процент percent
         if (percent < 1) {
-            throw new Exception("Нельзя ставить процент меньше 1");
+            throw new bidPricePercentLowException("Нельзя ставить процент меньше 1");
         }
 
         //Проверяю не продовец ли это мухлюет
         if (item.getSeller() == this) {
-            throw new Exception("Продавец не может купить свой товар");
+            throw new sellerBuySellerException("Продавец не может купить свой товар");
         }
 
         //Проверяю делал ли сегодня ставку на этот товар
-        for (Bid bid : item.getBidList()) {
+        for (Bid bid : item.getBidList())
             if (bid.getCreated().getDayOfYear() == LocalDate.now().getDayOfYear()) {
-                throw new Exception("Сегодня ставка уже сделана");
+                throw new twoBidDayException("Сегодня ставка уже сделана");
             }
-        }
 
         //Защищаем резерв прайс от нуля
         if (item.getReservePrice() == null) {
@@ -190,38 +199,30 @@ public class User {
     public void addComment(String text, Rating rating, String itemName) throws Exception {
         Item item = ItemList.getItem(itemName);
         Item boughtItem = null;
-        try {
-            if (item == null) throw new Exception("Не найден товар");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-//        try {
-            if (boughtItems.size() == 0) throw new Exception("Список покупок пуст");
-            for (Item items :
-                    boughtItems) {
-                if (items.equals(item)) {
-                    boughtItem = items;
-                    if (LocalDate.now().getDayOfYear() - item.getApprovalDatetime().getDayOfYear() <= 14) {
-                        new Comment(text, rating, item, this);
-                    } else
-                        try {
-                        throw new Exception("Прошло больше 14 дней с момента покупки");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw e;
-                    }
-                }
-            }
-            if (boughtItem == null) {
-                throw new Exception("Товар не найден в списке купленных");
 
+        if (item == null) throw new itemNotFound("Не найден товар");
+
+        if (boughtItems.size() == 0) throw new shoppingListEmptyException("Список покупок пуст");
+        for (
+                Item items :
+                boughtItems)
+
+        {
+            if (items.equals(item)) {
+                boughtItem = items;
+                if (LocalDate.now().getDayOfYear() - item.getApprovalDatetime().getDayOfYear() <= 14) {
+                    new Comment(text, rating, item, this);
+                } else throw new moreThan14Days("Прошло больше 14 дней с момента покупки");
             }
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            throw e;
-//        }
+        }
+        if (boughtItem == null)
+
+        {
+            throw new itemNotFound("Товар не найден в списке купленных");
+
+        }
     }
+
     //Добавляем категорию
     public void addCategory(String nameItem, String nameCategory, Categoty nameParrentCategory) {
         ItemList.getItem(nameItem).getCategotyList().add(new Categoty(nameCategory, nameParrentCategory));
